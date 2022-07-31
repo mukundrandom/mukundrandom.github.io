@@ -1,4 +1,3 @@
-
 function switchStep(newStep)
 {
   $(".step-link").toggleClass("active", false);

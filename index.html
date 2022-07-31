@@ -3,82 +3,157 @@
   <meta charset="utf-8">
   <title>CS 416 Data Visualization Final Project</title>
   <meta name="author" content="Mukund Madhusudan">
-  <meta name="description" content="">
 
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/stepper.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-
   <script src="js/stepper.js"></script>
   <script src="//d3js.org/d3.v3.min.js"></script>
+  
+  <style>
+	h1 {
+		text-align:center;
+		font-size: 42px;
+		color:blue;
+		margin-bottom: -10px;
+	}
+	h2 {
+		text-align:center;
+		font-size: 20px;
+		color:cadetblue;
+		margin-bottom: 20px;
+	}
+	h4 {
+		color:blue;
+  		font-size: 14px;
+	}
+	h4 {
+		color:blue;
+  		font-size: 12px;
+	}
+  </style>
 </head>
 <body>
-  <div id="container">
-    <h1>CO2 Emissions vs Vehicle Horsepower. Should your next vehicle be less powerful?</h1>
-    <h2 class="subtitle">Visualization is based on data from the Environment Protection Agency of 4,411 vehicles manufactured in 2015.</h2>
+  <div id="wrapper">
+    <h1 >Meta Stock Performance over Time</h1>
+    <h2>This visualization is based on data from Yahoo Finance.</h2>
     <div id="vis-nav">
-      <a href="#" id="step1" class="step-link active">Viz-Scene 1</a>
-      <a href="#" id="step2" class="step-link">Viz-Scene 2</a>
-      <a href="#" id="step3" class="step-link">Viz-Scene 3</a>
-      <a href="https://github.com/tylerwatkins101/cs498-visualization-project/blob/master/README.md" target="_blank" class="desc-link">About the Visualization</a>
-
+      <a href="#" id="step1" class="step-link active">Introduction</a>
+      <a href="#" id="step2" class="step-link">Overview</a>
+      <a href="#" id="step3" class="step-link">Impacts</a>
+	  <a href="#" id="step4" class="step-link">Try it!</a>
     </div>
-    <div id="vis-container">
+    <div id="vis-container" >
       <div id="annotation-steps">
         <div class="annotation-step" id="step1-annotation" style="display:block;">
-          <div class="annotation" id="step1-high-annotation" >
-            <h4>As horsepower increases C02 emissions increase for all vehicle types.</h4>
-                		  
-          </div>
+			<div class="annotation" id="step1-high-annotation" >
+            	<h4>This graph showcases the performance of Meta stock week-to-week from IPO until June of this year.</h4>
+			</div>
          </div>
         <div class="annotation-step" id="step2-annotation">
           <div class="annotation" id="step2-high-annotation" >
-	    <h4>Mouseover the data to see the individual trends for Cars, Trucks or SUVs.</h4>
-				
+	    		<h4>If we look closely, significant events or releases had impacts on the stock. Check out "Impacts" for more information.</h4>
           </div>
+		  <div class="annotation" id="step3-ipo-annotation" >
+			<h4>Originally Facebook, META had their initial public offering in May 2012 at $38.</h4>
+		  </div>
+		  <div class="annotation" id="step3-peak-annotation" >
+			<h4>Hit its all-time high at $381.68.</h4>
+		  </div>
         </div>
-	<div class="annotation-step" id="step3-annotation">
-          <div class="annotation" id="step3-high-annotation" >
-	    <h4>No matter what type of vehicle you choose. Maybe your next purchase should be less powerful?</h4>
-		
-          </div>
+		<div class="annotation-step" id="step3-annotation">
+			<div class="annotation" id="step3-ipo-annotation" >
+				<h4>Originally Facebook, META had their initial public offering in May 2012 at $38.</h4>
+			  </div>
+		  <div class="annotation" id="step3-whatsapp-annotation" >
+			<h5>We see a small spike in early 2014 after the purchase of Whatsapp.</h5>
+		  </div>
+		  <div class="annotation" id="step3-growth-annotation" >
+			<h4>For about 4 years, Facebook grew steadily alongside acquisitons of Oculus and Onavo. Overall improvement to Ads revenue and customer engagement on social media platforms contributed to the stock growth as well.</h4>
+		  </div>
+		  <div class="annotation" id="step3-scandal-annotation" >
+			<h4>After hitting what was then a peak price, the Cambridge Analytics scandal caused a massive hit in mid 2018.</h4>
+		  </div>
+		  <div class="annotation" id="step3-peak-annotation" >
+			<h4>Hit its all-time high at $381.68.</h4>
+		  </div>
+		  <div class="annotation" id="step3-covid-annotation" >
+			<h4>Plunge due to COVID.</h4>
+		  </div>
+
+		  <div class="annotation" id="step3-plunge-annotation" >
+			<h5>A combination of the Ukraine conflict, slowing economic growth, and lack of confidence in the product(s) led to this enormous drop.</h5>
+		  </div>
         </div>
+		<div class="annotation-step" id="step4-annotation">
+			<div class="annotation" id="step2-high-annotation" >
+				<h4>Try it yourself! Hover over the data points to see the exact stock price on certain weeks.</h4>
+			  </div>
+		</div>
       </div>
      <div id="vis-canvas"> 
+	
 	     
       <style>
-
+	path.line
+	{
+		fill:none;
+		stroke: #032347;
+	}
 	.axis path,
 	.axis line {
-	  fill: none;
-	  stroke: #000;
+	  fill: #032347;
+	  stroke:lightblue;
 	  shape-rendering: crispEdges;
 	}
 
 	.dot {
-	  stroke: #000;
+	  fill: blue;
+	  stroke: blue;
 	}
 
-	</style>
+	.tooltip {
+  position: relative;
+}
 
+	</style>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 	<script>
 
-	// Set the dimensions of the canvas / graph
-	var margin = {top: 50, right: 20, bottom: 30, left: 80},
-	    width = 940 - margin.left - margin.right,
-	    height = 500 - margin.top - margin.bottom;
 
-	// Set the ranges
-	var x = d3.scale.linear()
-	    .range([0, width]);
-	var y = d3.scale.linear()
-	    .range([height, 0]);
+var parseDate = d3.time.format("%Y-%m-%d").parse;
 
-	var color = d3.scale.category10();
+var margin = {top: 10, right: 70, bottom: 70, left: 0},
+	    width = 950 - margin.left - margin.right,
+	    height = 520 - margin.top - margin.bottom;
 
-	// Define the axes
-	var xAxis = d3.svg.axis()
+var max = 0;
+
+var xNudge = 50;
+var yNudge = 20;
+
+var minDate = new Date();
+var maxDate = new Date();
+
+d3.csv("data/META.csv")
+    .row(function(d) { return { Date: parseDate(d.Date), Open: Number(d.Open)}; })
+    .get(function(error, rows) {
+	    min = d3.min(rows, function(d) { return d.Open; });
+		max = d3.max(rows, function(d) { return d.Open; });
+	    minDate = d3.min(rows, function(d) {return d.Date; });
+		maxDate = d3.max(rows, function(d) { return d.Date; });
+
+
+		var y = d3.scale.linear()
+					.domain([min,max])
+					.range([height,0]);
+
+		var x = d3.time.scale()
+					.domain([minDate,maxDate])
+					.range([0,width]);
+
+		var xAxis = d3.svg.axis()
 	    .scale(x)
 	    .orient("bottom");
 
@@ -86,97 +161,91 @@
 	    .scale(y)
 	    .orient("left");
 
-	// Add the svg canvas
-	var svg = d3.select("#vis-canvas").append("svg")
+
+		var line = d3.svg.line().interpolate("cardinal")
+			.x(function(d){ return x(d.Date); })
+			.y(function(d){ return y(d.Open); });
+
+
+			var svg = d3.select("#vis-canvas").append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
 	  .append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	// Get the data
-	d3.csv("https://raw.githubusercontent.com/tylerwatkins101/cs498-visualization-project/master/data/epa2015_final.csv", function(error, data) {
-	  if (error) throw error;
+		svg.append("rect")
+			.attr("width", "100%")
+			.attr("height", "100%")
+			.attr("fill", "#a4c6ed");
+		
+		var chartGroup = svg.append("g").attr("class","chartGroup").attr("transform","translate("+xNudge+","+yNudge+")");
+		
+		var tooltip = d3.select("body")
+			.append("div")
+			.attr("id", "mytooltip")
+			.style("position", "absolute")
+			.style("z-index", "10")
+			.style("visibility", "hidden")
+			.text("a simple tooltip");
 
-	  data.forEach(function(d) {
-	    d.CO2 = +d.CO2;
-	    d.horse = +d.horse;
-	  });
+		chartGroup.append("path")
+			.attr("id", "myPath")
+			.attr("class","line")
+			.attr("d",function(d){ return line(rows); });
 
-	// Scale the range of the data
-	  x.domain(d3.extent(data, function(d) { return d.horse; })).nice();
-	  y.domain(d3.extent(data, function(d) { return d.CO2; })).nice();
+	chartGroup.selectAll(".dot")
+    .data(rows)
+    .enter()
+    .append("circle")
+    .attr("class", "data-point")
+    .attr("cx", function(d) {
+        return x(d.Date);
+    })
+    .attr("cy", function(d) {
+        return y(d.Open);
+    })
+    .attr("r", 2)
+	.attr("opacity", 0.5)
+	.attr("fill", "#000")
+	.on("mouseover",function(d) { 
+    d3.select("#mytooltip")
+    .style("visibility", "visible")
+	.style("color", "blue")
+	.style("font-size", "16px")//set style to it
+    .text("$"+parseFloat(Math.abs(381.679993-y(d.Open)).toFixed(2)))//set text to it
+   });
 
-	// Add the X Axis
-	  svg.append("g")
+   chartGroup.on("mousemove", function() { 
+    return tooltip.style("top", (d3.event.pageY)+"px") 
+    .style("left",(d3.event.pageX+10)+"px"); 
+    });
+	
+	chartGroup.append("g")
 	      .attr("class", "x axis")
 	      .attr("transform", "translate(0," + height + ")")
 	      .call(xAxis)
 	    .append("text")
 	      .attr("class", "label")
-	      .attr("x", width)
-	      .attr("y", -6)
-	      .style("text-anchor", "end")
-	      .text("Rated Horsepower (foot-pounds per second)");
+	      .attr("x", 435)
+	      .attr("y", -10)
+	      .style("text-anchor", "center")
+		  .style("font-size", "16px")
+		  .style("color", "white")
+	      .text("Year");
 
-	// Add the Y Axis
-	  svg.append("g")
+	  chartGroup.append("g")
 	      .attr("class", "y axis")
 	      .call(yAxis)
 	    .append("text")
 	      .attr("class", "label")
 	      .attr("transform", "rotate(-90)")
-	      .attr("y", 6)
-	      .attr("dy", ".71em")
+	      .attr("y", 20)
+	      .attr("x", -140)
+		  .style("font-size", "16px")
 	      .style("text-anchor", "end")
-	      .text("CO2 Emissions (grams per mile)")
-
-	// Add the Scatterplot
-	  svg.selectAll(".dot")
-	      .data(data)
-	    .enter().append("circle")
-	      .attr("class", "dot")
-	      .attr("r", 3.5)
-	      .attr("cx", function(d) { return x(d.horse); })
-	      .attr("cy", function(d) { return y(d.CO2); })
-	      .style("fill", function(d) { return color(d.type); })
-	      .on("mouseover", function(d){
-        	  d3.selectAll('.dot')
-            	   .filter(function(dot){ 
-                    return (dot.type != d.type) 
-                   })
-                   .transition()
-                   .style("opacity", 0.01)
-          })
-              .on("mouseout", function(d){
-               d3.selectAll('.dot')
-                .filter(function(dot){ 
-                 return (dot.type != d.type) 
-                })
-                .transition()
-                .style("opacity", 1)
-          });
-
-	// Add the Legend
-	  var legend = svg.selectAll(".legend")
-	      .data(color.domain())
-	    .enter().append("g")
-	      .attr("class", "legend")
-	      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-	  legend.append("rect")
-	      .attr("x", width - 18)
-	      .attr("width", 18)
-	      .attr("height", 18)
-	      .style("fill", color);
-
-	  legend.append("text")
-	      .attr("x", width - 24)
-	      .attr("y", 9)
-	      .attr("dy", ".35em")
-	      .style("text-anchor", "end")
-	      .text(function(d) { return d; });
-
+	      .text("Price at Open (USD)")
 	});
+
 
 	</script>
      </div>
